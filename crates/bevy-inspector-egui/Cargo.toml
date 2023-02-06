@@ -13,6 +13,7 @@ categories = ["game-development", "gui", "visualization", "development-tools::pr
 [features]
 default = ["bevy_pbr", "highlight_changes", "documentation"]
 documentation = ["bevy_reflect/documentation"]
+documentation-for-components = ["documentation"]
 highlight_changes = []
 
 [dependencies]
