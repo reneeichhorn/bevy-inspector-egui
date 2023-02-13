@@ -54,6 +54,7 @@
 //! }
 //! ```
 
+use crate::egui_utils;
 use crate::inspector_egui_impls::{iter_all_eq, InspectorEguiImpl};
 use crate::inspector_options::{InspectorOptions, ReflectInspectorOptions, Target};
 use crate::restricted_world_view::RestrictedWorldView;
@@ -389,9 +390,7 @@ impl InspectorUi<'_, '_> {
 
                 let _response = ui.label(field_info.name());
                 #[cfg(feature = "documentation")]
-                if let Some(docs) = field_info.docs() {
-                    _response.on_hover_text(docs);
-                }
+                show_docs(_response, field_info.docs());
 
                 let field = value.field_at_mut(i).unwrap();
                 changed |= self.ui_for_reflect_with_options(
@@ -421,9 +420,7 @@ impl InspectorUi<'_, '_> {
 
                 let _response = ui.label(field_info.name());
                 #[cfg(feature = "documentation")]
-                if let Some(docs) = field_info.docs() {
-                    _response.on_hover_text(docs);
-                }
+                show_docs(_response, field_info.docs());
 
                 let field = value.field_at(i).unwrap();
                 self.ui_for_reflect_readonly_with_options(
@@ -451,9 +448,7 @@ impl InspectorUi<'_, '_> {
             for (i, field) in info.iter().enumerate() {
                 let _response = ui.label(field.name());
                 #[cfg(feature = "documentation")]
-                if let Some(docs) = field.docs() {
-                    _response.on_hover_text(docs);
-                }
+                show_docs(_response, field.docs());
 
                 changed |= self.ui_for_reflect_many_with_options(
                     field.type_id(),
@@ -949,9 +944,7 @@ impl InspectorUi<'_, '_> {
                                     ui.label(i.to_string())
                                 };
                                 #[cfg(feature = "documentation")]
-                                if let Some(docs) = field_docs {
-                                    _response.on_hover_text(docs);
-                                }
+                                show_docs(_response, field_docs);
                             }
                             let field_value = value
                                 .field_at_mut(i)
@@ -1378,4 +1371,12 @@ fn inspector_options_enum_variant_field<'a>(
 
 fn or(a: bool, b: bool) -> bool {
     a || b
+}
+
+fn show_docs(response: egui::Response, docs: Option<&str>) {
+    if let Some(docs) = docs {
+        response.on_hover_ui(|ui| {
+            egui_utils::easymark(ui, docs);
+        });
+    }
 }
