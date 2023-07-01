@@ -38,7 +38,6 @@
 
 use std::any::TypeId;
 
-use bevy_app::prelude::AppTypeRegistry;
 use bevy_asset::{Asset, Assets, ReflectAsset};
 use bevy_ecs::query::ReadOnlyWorldQuery;
 use bevy_ecs::system::CommandQueue;
